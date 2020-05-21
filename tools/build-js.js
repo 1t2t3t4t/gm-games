@@ -1,39 +1,60 @@
-// @flow
-
-// Used to be:
-// browserify -d -p [minifyify --map app.js.map --output gen/app.js.map] js/app.js -o gen/app.js
-// ...but then it got too complicated, and this seemed easier
-
-const aliasify = require("aliasify");
-const babelify = require("babelify");
-const browserify = require("browserify");
-const blacklistify = require("blacklistify/custom");
-const envify = require("envify/custom");
-const fs = require("fs");
-const build = require("./buildFuncs");
+const rollup = require("rollup");
+const build = require("./lib/buildFuncs");
+const getSport = require("./lib/getSport");
+const replace = require("replace");
+const rollupConfig = require("./lib/rollupConfig");
 
 console.log("Bundling JavaScript files...");
 
+const rev = build.genRev();
+console.log(rev);
+
+const sport = getSport();
+
 const BLACKLIST = {
-    ui: [/.*\/worker.*/],
-    worker: [/.*\/ui.*/, /.*react.*/],
+	ui: [/\/worker/],
+	worker: [/\/ui/, /^react/],
 };
 
-const sport = build.getSport();
+const buildFile = async (name, legacy) => {
+	const bundle = await rollup.rollup({
+		...rollupConfig("production", BLACKLIST[name], `stats-${name}.html`),
+		input: `src/${sport}/${name}/index.ts`,
+	});
 
-for (const name of ["ui", "worker"]) {
-    browserify(`src/${sport}/${name}/index.js`, { debug: true })
-        .on("error", console.error)
-        .transform(babelify)
-        .transform(blacklistify(BLACKLIST[name]))
-        .transform(envify({ NODE_ENV: "production", SPORT: sport }), {
-            global: true,
-        })
-        .transform(aliasify, {
-            aliases: {
-                "league-schema.json": `./public/${sport}/files/league-schema.json`,
-            },
-        })
-        .bundle()
-        .pipe(fs.createWriteStream(`build/gen/${name}.js`));
-}
+	const outFile = legacy
+		? `build/gen/${name}-legacy-${rev}.js`
+		: `build/gen/${name}-${rev}.js`;
+
+	await bundle.write({
+		compact: true,
+		file: outFile,
+		format: "iife",
+		indent: false,
+		name,
+		sourcemap: true,
+	});
+
+	// Hack because otherwise I'm somehow left with no newline before the souce map URL, which confuses Bugsnag
+	replace({
+		regex: ";//# sourceMappingURL",
+		replacement: ";\n//# sourceMappingURL",
+		paths: [outFile],
+		silent: true,
+	});
+};
+
+(async () => {
+	try {
+		await Promise.all(["ui", "worker"].map(name => buildFile(name)));
+
+		process.env.LEGACY = "LEGACY";
+		await Promise.all(["ui", "worker"].map(name => buildFile(name, true)));
+		delete process.env.LEGACY;
+
+		build.setTimestamps(rev);
+	} catch (error) {
+		console.error(error);
+		process.exit(1);
+	}
+})();

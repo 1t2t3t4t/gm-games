@@ -1,223 +1,209 @@
-Don't read much into the release dates. Changes are pushed live as often as
-possible, regardless of whether I make an official release with a new version
-number or not.
+This is a user-focused changelog. The entries here are things that affect gameplay.
 
-# 5.1.0 (in progress)
+The dates are when development finished, not when the change was actually deployed to basketball-gm.com or football-gm.com.
 
-## Gameplay and UI
+Entries in bold are ones important enough that I would have put them in [the old changelog](./CHANGELOG-old.md).
 
-- [Frivolities](https://basketball-gm.com/blog/2019/05/frivolities/)
+* 2020-05-20: New hair styles! [[1]](https://old.reddit.com/r/BasketballGM/comments/gnowab/thanks_to_usmileyoaks_there_are_some_new_hair/)
 
-# 5.0.0 (2019-05-25)
+* 2020-05-20: AI teams draft smarter. Previously the probability they would pick a player depended only on that player's rank, but now it depends on how good the players are. So the AI will almost always take the clear #1 pick, but there will be more randomness if the top available prospects have similar talents.
 
-## Gameplay and UI
+* 2020-05-19: You can now create a "legends" league filled with the best players in each franchise's history. [[1]](https://basketball-gm.com/blog/2020/05/legends-leagues/) [[2]](https://old.reddit.com/r/BasketballGM/comments/gmznsx/new_in_version_202005191391_you_can_now_create_a/)
 
-- This is no longer just Basketball GM, it's also Football GM!
-- ["Untouchable" players and picks in trades](https://basketball-gm.com/blog/2018/10/untouchable-players-and-picks-in-trades/)
-- [New options: hard/soft cap and playoff byes](https://basketball-gm.com/blog/2018/11/new-options-hard-soft-cap-and-playoff-byes/)
+* 2020-05-18: Added ability to supply real team info and player photos on the Options page, which overrides the defaults in any new league with real players. [[1]](https://basketball-gm.com/manual/customization/real-team-info-player-photos/)
 
-## Technical details
+* 2020-05-16: Added "Auto adjust for inflation" option to the Team Finances page, which will keep revenue and expense settings in sync with salary cap changes. This setting is enabled by default.
 
-- Refactored everything to support building Basketball GM and Football GM while sharing as much code as possible
+* 2020-05-14: Shows the team a player was selected from in the "Drafted" table of expansion drafts.
 
-# 4.1.0 (2018-10-07)
+* 2020-05-14: Historical rosters in BBGM include team abbreviations that change when a team moves, without breaking links to team pages from past seasons. Some parts of the UI still incorrectly display the current abbreviation rather than the historical one.
 
-## Gameplay and UI
+* 2020-05-14: "Team History" page shows team region and name from past seasons. [[1]](https://old.reddit.com/r/BasketballGM/comments/gjy01l/version_202005141399_team_history_page_shows_team/)
 
-- [Major changes to player ratings and development](https://basketball-gm.com/blog/2018/02/player-ratings-and-development-beta/)
-- [Performance improvements in large leagues](https://basketball-gm.com/blog/2018/04/performance-improvements-in-large-leagues/)
-- [Relatives - fathers, sons, and brothers](https://basketball-gm.com/blog/2018/05/relatives-fathers-sons-and-brothers/)
-- [Draft day trades](https://basketball-gm.com/blog/2018/05/draft-day-trades/)
-- [Option to change difficulty level](https://basketball-gm.com/blog/2018/06/difficulty-levels/)
-- [Lots of small UI improvements](https://basketball-gm.com/blog/2018/10/lots-of-small-ui-improvements/)
+* 2020-05-13: "Sim to game" button on the schedule page, which now also includes the All-Star game.
 
-## Technical details
+* 2020-05-13: Made AI trade rate proportional to the number of teams, so there aren't too many trades in very small leagues.
 
-- Finally switched from AppCache to a service worker for offline support
-- Upgraded from Bootstrap 3 to Bootstrap 4, and make a lot better use of Sass
+* 2020-05-12: Added 4 new draft lottery types, to improve the accuracy of historical leagues in BBGM. [[1]](https://basketball-gm.com/blog/2020/05/more-draft-lottery-types/) [[2]](https://old.reddit.com/r/BasketballGM/comments/gildrw/new_in_version_202005121314_four_new_types_of/)
 
-# 4.0.0 (2018-03-07)
+* 2020-05-12: Playoff seeds and W/L are shown in score boxes (schedule page, dashboard, live game sim, etc.).
 
-## Gameplay and UI
+* 2020-05-11: Revamped the UI for selecting a live game to watch. [[1]](https://old.reddit.com/r/BasketballGM/comments/gi1gpu/i_also_snuck_this_update_into_todays_release_the/)
 
-- Massive performance improvement, like an order of magnitude (see technical details for more)
-- Table filtering, like "show only players with >1 block per game and >1 steal per game"
-- AI teams trade with each other
-- New Options screen
-- Sometimes young players (particularly from certain countries) will fake their ages
-- The draft lottery is viewable live
-- A lot more advanced stats, viewable from Team Stats, Player Stats, and Player pages
+* 2020-05-10: Schedules for leagues with non-standard teams and divisions now have balanced home/away games when possible. Or at least close to that - it's not a deterministic algorithm, but it works pretty well.
 
-## Technical details
+* 2020-05-10: New League Stats page which lets you see team stats for all seasons in one table.
 
-- Game separated into UI and worker threads
-- Cache layer on top of IndexedDB so that hitting the database is only required for viewing historical data
+* **2020-05-09: Added real historical rosters back to 1956 in BBGM. [[1]](https://basketball-gm.com/blog/2020/05/beta-real-rosters-back-to-1956/) [[2]](https://old.reddit.com/r/BasketballGM/comments/gghq04/real_rosters_back_to_1956_is_officially_in_beta/) [[3]](https://old.reddit.com/r/BasketballGM/comments/ghw91z/official_release_real_rosters_back_to_1956/)**
 
-# 3.6.0 (2017-01-30)
+* 2020-05-07: Expansion drafts can be predefined in a league file to trigger at a certain time.
 
-## Gameplay and UI
+* **2020-05-05: Expansion draft, including configurable player protections from existing teams and the ability to control an expansion team. Tools > Expansion Draft.**
 
-- Default teams now have logos
-- International players from 85 countries, and better names for American players
-- Conferences and divisions are now customizable, although only through league files
+* 2020-05-03: Added a new page Tools > Manage Confs that allows you to create, edit, and delete divisions and conferenes.
 
-## Techincal details
+* 2020-05-03: Added tracking of changes to some league settings (conferences, divisions, and number of playoff rounds) so that historical screens don't show incorrect values.
 
-- Incorporated Babel into build pipeline, most notably enabling async/await
-- UI ported from Knockout to React
+* 2020-05-03: Added support for team info changes (name, region, logo, etc.) to be predefined in a league file and trigger only at a certain year.
 
-# 3.5.0 (2016-05-27)
+* **2020-05-03: In BBGM, added game simulation settings to God Mode to allow for more realistic simulation of different eras of basketball, when things like pace and 3 point shooting were very different.**
 
-## Gameplay and UI
+* 2020-05-02: Added the ability to change what division/conference a team belongs to from Tools > Manage Teams.
 
-- Export Stats feature (player average stats or individual game stats)
-- More detailed info display: four factors in box scores, transaction log in player pages, etc.
-- Statistical Feats feature
-- Auto play multiple seasons
-- Screenshots
-- Multi Team Mode
-- Players can die
-- +/- and blocks against are recorded
-- New historical screens: Transactions, Awards Records, and Team Records
-- Streamlined contract negotiations
-- Serious injuries can result in decreased athleticism ratings
-- A bunch of options in God Mode, like changing the salary cap, disabling injuries, etc.
+* 2020-05-02: Added tracking of changes to team info (name, region, logo, etc.) so they can be displayed correctly when viewing historical data. Previously, updating a team's name (for example) would update it when viewing data from past seasons too.
 
-## Techincal details
+* 2020-05-01: Added a way to temporarily disable auto save to the Danger Zone screen.
 
-- Wrapped all IndexedDB calls in a Promises-based abstraction layer
-- Phase changes (e.g. regular season to playoffs) happen in a single transaction and are cancellable, so inconsistend DB states should be harder to reach
-- Switched from RequireJS to Browserify
-- Normalized teams object store into teams, teamSeasons, and teamStats object stores, leading to performance improvements in leagues with many season
+* 2020-05-01: Added "Acquired" column to the re-signing players table.
 
-# 3.4.0 (2014-12-05)
+* **2020-04-30: Added real historical rosters back to 2005 in BBGM. [[1]](https://basketball-gm.com/blog/2020/04/real-rosters-back-to-2005/) [[2]](https://old.reddit.com/r/BasketballGM/comments/gb3etv/new_in_version_202004301213_builtin_rosters_with/)**
 
-## Gameplay and UI
+* **2020-04-25: Added an option in BBGM to create a new league based on real players. [[1]](https://basketball-gm.com/blog/2020/04/real-players/) [[2]](https://old.reddit.com/r/BasketballGM/comments/g7vg6w/new_in_versions_202004250934_built_in_support_for/)**
 
-- "God Mode" including Create A Player, Edit Player, and Force Trade
-- New trade AI, fixing a ton of loopholes
-- Achievements
-- Upcoming Free Agents page
-- Export of entire league data
-- Easy import of custom draft classes
-- Whole league export
-- More realistic player development algorithm
+* 2020-04-19: Added new God Mode option "Trades Between AI Teams Factor" to control the rate of trades between AI teams. [[1]](https://old.reddit.com/r/BasketballGM/comments/g4kvht/new_in_version_202004200168_god_mode_option_to/) [[2]](https://old.reddit.com/r/Football_GM/comments/g4kvsf/new_in_version_202004200170_god_mode_option_to/)
 
-## Technical details
+* 2020-04-16: In FBGM, defensive linemen now get fewer tackles.
 
-- Separated playerStats object store from players object store for performance
+* **2020-04-16: Added a new Award Races page, available under the Stats menu. [[1]](https://old.reddit.com/r/BasketballGM/comments/g2sgwf/new_in_version_202004170093_award_races/) [[2]](https://old.reddit.com/r/Football_GM/comments/g2sgxa/new_in_version_202004170094_award_races/)**
 
-# 3.3.0 (2014-01-21)
+* 2020-04-16: Added "Auto sort roster" and "Reset playing time" buttons to the Multi Team Mode page, to allow you to easily apply those actions to all teams you control.
 
-## Gameplay and UI
+* 2020-04-12: Scores of your team's games are shown at the top of the screen on all pages. [[1]](https://www.youtube.com/watch?v=r65xhONYbTc) [[2]](https://old.reddit.com/r/BasketballGM/comments/fz6n1z/basketball_gm_beta_feature_scores_at_the_top_of/)
 
-- AppCache used to allow offline play
-- Fantasy Draft feature
-- Extended free agency phase
-- Live play-by-play game simulation
-- Removed roster size limit restriction on trades
-- Centralized notification system and event log
-- Smarter in-game coach: substitutions are based on performance, not just ratings
-- GM firings happen after the playoffs, not before the regular season
-- Finals MVP award
-- Season totals, per 36 minutes stats, and career stats are viewable from the main player stats page
-- Option to delete old game data to improve performance
-- Future draft classes are visible up to 3 years in the future
-- New default team regions and names
-- Watch List where selected players can be tracked
+* 2020-03-12: Changes to player salaries in God Mode will now show up in the Player Salaries table on player pages.
 
-## Technical details
+* 2020-03-12: Added seeds of the league champion and runner up to the League History table. Also, for leagues where the length of the playoffs is changed in God Mode, the champion is now shown correctly in this table.
 
-- Refactored core.trade API
+* 2020-03-12: Added an option in God Mode to lock an individual player's ratings, so they don't change from season to season.
 
-# 3.2.0 (2013-10-05)
+* 2020-03-07: Added "Reset Table" in the "..." menu for tables, which resets the search text, page, sorting, and filters to their default values.
 
-## Gameplay and UI
+* 2020-03-03: New God Mode option to set rookie contract lengths. [[1]](https://old.reddit.com/r/BasketballGM/comments/fd1qi3/new_in_version_202003031279_god_mode_option_to/)
 
-- New mobile-friendly design
-- Trading Block feature
-- "What would make this deal work?" button can add assets from either team
-- Removed the ability to "buy out" players to get rid of bad contracts
-- AI teams will not trade away more than two draft picks in a single trade
-- Fewer high-rated big men are generated
-- Support for customized team names
-- Support for player images in custom rosters
-- After being fired, you can get hired by another team
-- Quarter-by-quarter scoring in box scores
+* 2020-03-03: Added new Countries frivolity to show which countries have the best players, similar to the existing Colleges frivolity. [[1]](https://old.reddit.com/r/BasketballGM/comments/fczv7r/tools_frivolities_countries_in_version/)
 
-## Technical details
+* 2020-03-02: Added jump balls to BBGM game sim at the beginning of each game and overtime period, based on height and jumping ratings. [[1]](https://old.reddit.com/r/BasketballGM/comments/fcoq8i/big_news_jump_balls_are_based_on_height_and/)
 
-- Upgraded to Bootstrap 3
-- Added ability to alert users to new features without relying on an IndexedDB upgrade
+* 2020-02-28: Added "Acquired" column to the roster, showing how the team acquired each of its players. [[1]](https://basketball-gm.com/blog/2020/02/acquired-column-roster/) [[2]](https://old.reddit.com/r/BasketballGM/comments/fbe13e/new_in_version_202002290926_acquired_column_on/) [[3]](https://old.reddit.com/r/Football_GM/comments/fbe2du/new_in_version_202002290927_acquired_column_on/)
 
-# 3.1.1 (2013-07-26)
+* 2020-02-26: Upcoming Free Agents contracts factor in player mood, and the "Current Contract" column is not shown during the re-signing phase.
 
-## Technical details
+* 2020-02-17: New retirement formula in BBGM will allow rare old and good players to have longer careers.
 
-- Just a bunch of minor bug fixes
+* 2020-02-13: Redesigned schedule listings to include team logos, team records, team overall ratings, and the predicted point spread. [[1]](https://old.reddit.com/r/BasketballGM/comments/f3izh4/new_in_version_202002131405_redesigned_schedule/) [[2]](https://old.reddit.com/r/Football_GM/comments/f3j0in/new_in_version_202002131406_redesigned_schedule/)
 
-# 3.1.0 (2013-07-17)
+* 2020-02-10: Added play/pause/next controls to the draft lottery reveal. [[1]](https://old.reddit.com/r/BasketballGM/comments/f201yh/new_in_version_202002110036_playpausenext_buttons/)
 
-## Gameplay and UI
+* 2020-02-08: Added option to set units for height and weight to metric. [[1]](https://old.reddit.com/r/BasketballGM/comments/f0ulhj/new_in_version_202002081042_an_option_to_switch/) [[2]](https://old.reddit.com/r/Football_GM/comments/f0ulhy/new_in_version_202002081043_an_option_to_switch/)
 
-- Player contract demands are based on ratings and stats, not just ratings
-- Future draft picks can be traded
-- "What would make you agree to this deal?" button to get counter-offers in trade negotiations
-- GMs of other teams pursue different strategies depending on if they are contending or rebuilding
+* 2020-02-07: Added Player Bios page and removed country and college info from Player Ratings. [[1]](https://old.reddit.com/r/BasketballGM/comments/f0h9yv/new_in_v202002071284_player_bios_table_also_the/) [[2]](https://old.reddit.com/r/Football_GM/comments/f0h8wf/new_in_v202002071286_player_bios_table_also_the/)
 
-## Technical details
+* 2020-02-03: For users who have an OS-level dark mode enabled, the default color scheme is now dark.
 
-- Internet Explorer 10 works much more smoothly now, although it's still not very well tested
+* 2020-02-02: Players are assigned a college when they are generated. [[1]](https://basketball-gm.com/blog/2020/02/colleges/) [[2]](https://old.reddit.com/r/BasketballGM/comments/ey1zqg/new_in_v202002030317_colleges/) [[3]](https://old.reddit.com/r/Football_GM/comments/ey20vo/new_in_v202002030318_colleges/)
 
-# 3.0.0 (2013-06-23)
+* 2020-02-01: In FBGM, touchbacks on punts put the ball at the 20 yard line, not 25.
 
-## Gameplay and UI
+* 2020-02-01: Added sacks to the league leaders page.
 
-- Can export rosters from a league
-- Ability to use a custom roster file rather than randomly-generated players in a new league
-- Hall of Fame
+* 2020-01-30: Added average margin of victory to the roster page.
 
-# 3.0.0-beta.3 (2013-05-20)
+* 2020-01-05: Revamped the UI for page titles, dropdown options, and shortcut links between pages.
 
-## Gameplay and UI
+* 2020-01-03: Added support for boolean "or" operations in table column filters, like "C|PF" to display centers and power forwards. [[1]](https://old.reddit.com/r/BasketballGM/comments/eji5hf/new_in_version_202001031015_boolean_or_operations/) [[2]](https://old.reddit.com/r/Football_GM/comments/eji5i9/new_in_version_202001031016_boolean_or_operations/)
 
-- Draft lottery, based on NBA rules
-- Made it harder to fleece the AI in trades
-- Faster UI, particularly in the game log
-- Team history viewable for any team, including a table of all players who played for that team
-- Playing time can be controlled from the roster page
+* 2020-01-02: Fixed bug where loading a league file during a fantasy draft created extra draft prospects.
 
-## Technical details
+* 2019-12-29: Decreased pace in FBGM, to make it more similar to the NFL (~1000 plays/year per team, rather than ~1200).
 
-- Refactored views from a single giant file into multiple more managable files in the views folder
-- Moved templates from Handlebars.js to Knockout
-- Smarter realtime UI updates, so that database reads and DOM updates occur less frequently
+* 2019-12-29: Fixed bugs in AV calculation. [[1]](https://old.reddit.com/r/Football_GM/comments/eg68ot/av_calculation_is_broken_for_qbs/fchi9ld/)
 
-# 3.0.0-beta.2 (2013-03-23)
+* 2019-12-27: New God Mode options to set the number of fouls needed to foul out and the foul rate. [[1]](https://old.reddit.com/r/BasketballGM/comments/egi54x/new_god_mode_options_to_set_the_number_of_fouls/)
 
-## Gameplay and UI
+* 2019-12-16: New God Mode option to set the number of seasons in the future that you can trade draft picks. [[1]](https://old.reddit.com/r/BasketballGM/comments/ebq59y/version_201912170204_new_god_mode_option_to_set/) [[2]](https://old.reddit.com/r/Football_GM/comments/ebq5at/version_201912170206_new_god_mode_option_to_set/)
 
-- Injuries
-- Home court advantage in game simulation
-- More refined financial data, such as different classes of revenue and expenses
-- Team finances view, which includes a lot of information that was not previously accessible
-- "Hype" for a team governs things like attendance and revenue
-- Different population sizes for different regions, which influences revenue and thus game difficulty
-- Awards and salaries from previous seasons displayed in player view
-- Many small bug fixes and UI improvements
-- More sane and less adversarial contract negotiations, with more direct feedback about what the player is thinking
-- Settings to control various budget items, such as ticket price, scouting budget, etc.
-- "Fuzz" in displayed player ratings: the more spent on scouting, the more accurate the displayed ratings
-- More historical information in player view: previous contracts and awards won
-- Annual interactions with the owner: if you do poorly, you might get fired
-- Free agents refuse to sign with your team if they don't like you
+* 2019-12-14: Fewer fumbles recovered by the offense will result in large yardage gains after recovery. [[1]](https://old.reddit.com/r/Football_GM/comments/eaosau/a_couple_game_simulation_improvements_in_version/)
 
-## Technical details
+* 2019-12-14: Smarter end of half/game clock management in FBGM, most importantly resulting in more field goals as the clock runs out. [[1]](https://old.reddit.com/r/Football_GM/comments/eaosau/a_couple_game_simulation_improvements_in_version/)
 
-- Support for minification and compiling of templates/CSS/JavaScript, all easily controllable from the Makefile
-- More unit tests (although many more are still needed)
-- Moved all JavaScript out of templates
+* 2019-12-11: Added a "Budget" option to God Mode, which lets you equalize all the team spending effects (scouting, coaching, facilities, health) and ignore whether your team is making a profit or loss. [[1]](https://old.reddit.com/r/BasketballGM/comments/e5qq7l/thoughts_on_a_potential_no_finances_mode/) [[2]](https://old.reddit.com/r/BasketballGM/comments/e9d9xs/new_in_version_201912111267_a_budget_option_in/) [[3]](https://old.reddit.com/r/Football_GM/comments/e9dakv/new_in_version_201912111268_a_budget_option_in/)
 
-# 3.0.0-beta (2013-03-02)
+* 2019-12-07: Change team ovr ratings to be unbounded rather than 0-100, because some multiplayer leagues and custom roster files people use have very unflated ratings and half the league ends up at 100.
 
-- First release in a very long time, so basically everything changed
+* 2019-12-01: Show region population on league finances page.
+
+* 2019-11-25: Player names and countries are now more realistic in FBGM, rather than just being copied from BBGM. [[1]](https://old.reddit.com/r/Football_GM/comments/e1hocb/new_in_version_201911250934_player_names_and/)
+
+* 2019-11-24: Box score shows home team at the bottom, not the top. This matches how every other website does it.
+
+* 2019-11-23: Fixed several penalties in FBGM to awarwd automatic first downs.
+
+* 2019-11-23: Added JSON Schema validation when loading a league file in FBGM.
+
+* 2019-11-23: Fixed sack safeties - should always be credited to the same player.
+
+* 2019-11-23: Fixed bug where a turnover during a two-point conversion try would result in the wrong team kicking off.
+
+* 2019-11-23: Fixed glitch in box score where safeties and two-point conversions would be confused.
+
+* 2019-11-22: On player page, link the draft year to the draft history page even for undrafted players.
+
+* 2019-11-21: Integrated shot locations into the normal stats table.
+
+* **2019-11-20: Added team overall rating for FBGM and improved power rankings. [[1]](https://old.reddit.com/r/Football_GM/comments/dz84f8/new_in_version_201911201248_team_ratings_and/)**
+
+* 2019-11-18: Added option to enable persistent storage, and request it by default if no prompt is needed.
+
+* 2019-11-17: Fix updating of ovr and pot after editing a player's position in FBGM.
+
+* **2019-11-16: Added team overall rating for BBGM and improved power rankings. [[1]](https://old.reddit.com/r/BasketballGM/comments/dz84fr/new_in_version_201911201247_team_ratings_and/)**
+
+* 2019-11-15: When importing a league file with partially defined stats objects (like for manually added historical data), fill in any missing stats with 0.
+
+* 2019-11-15: Fewer really short (less than 4 seconds) possessions in BBGM.
+
+* 2019-11-14: Improve rookie salary extrapolation for leagues with more teams than default.
+
+* 2019-11-13: Option to minify JSON when exporting a league.
+
+* 2019-11-13: Worked around bug in mobile Safari that was breaking scrolling of sortable tables.
+
+* 2019-11-10: Better calculation of days remaining, like if you play a month when only 20 days are left, it'll start the countdown at 20.
+
+* 2019-11-09: Fix importing of players with only historical stats.
+
+* 2019-11-08: New ovr formula for BBGM. [[1]](https://basketball-gm.com/blog/2019/11/game-simulation-ovr-beta/) [[2]](https://old.reddit.com/r/BasketballGM/comments/dtyef8/game_simulation_improvements_and_tweaks_to_ovr/)
+
+* 2019-11-03: Switch key binding for "one day" from alt+d to alt+y, because browsers already use alt+d.
+
+* 2019-11-03: When importing over a starred league, retain the star after import.
+
+* 2019-11-03: Fix errors that happened when editing a player's relatives.
+
+* 2019-11-02: Fix team history pages for players with no ratings for a team, only stats (like for custom rosters with historical stats)
+
+* **2019-11-02: Multiple improvements to BBGM game simulation, mostly related to more realistic behavior in the play-by-play. [[1]](https://old.reddit.com/r/BasketballGM/comments/dqoc8u/game_simulation_improvements_beta/) [[2]](https://basketball-gm.com/blog/2019/11/game-simulation-ovr-beta/) [[3]](https://old.reddit.com/r/BasketballGM/comments/dtyef8/game_simulation_improvements_and_tweaks_to_ovr/)**
+
+* **2019-10-27: Made long-term effects of injuries viewable on player pages, along with a log of all player injuries. [[1]](https://basketball-gm.com/blog/2019/10/improvements-injury-system/) [[2]](https://old.reddit.com/r/BasketballGM/comments/do0jtz/new_in_bbgm_201910271376_more_injury_info_and/) [[3]](https://old.reddit.com/r/Football_GM/comments/do0jss/new_in_version_201910271377_more_injury_info_and/)**
+
+* 2019-10-22: New UI for the dashboard. [[1]](https://basketball-gm.com/blog/2019/10/new-dashboard-ui/) [[2]](https://old.reddit.com/r/BasketballGM/comments/dlpkdr/new_dashboard_ui_in_version_201910221337/) [[3]](https://old.reddit.com/r/Football_GM/comments/dlpkqu/new_dashboard_ui_in_version_201910221338/)
+
+* 2019-10-19: Added more keyboard shortcuts to the items in the Play menu. [[1]](https://old.reddit.com/r/BasketballGM/comments/djyy10/more_keyboard_shortcuts_in_version_201910190261/) [[2]](https://old.reddit.com/r/Football_GM/comments/djyyl1/more_keyboard_shortcuts_in_version_201910190263/)
+
+* 2019-10-13: Added special gold basketball/football logos for Gold subscribers.
+
+* 2019-10-13: Added "Type" column to statistical feats table, allowing the display of regular season, playoff, and All-Star feats all in one table.
+
+* 2019-10-13: Fixed a rare bug in draft lottery odds.
+
+* 2019-10-13: Added an "Export" button for each draft class on the Draft Scouting page.
+
+* 2019-10-11: Revamped the Manage Teams page. Some features are available outside of God Mode, and team colors are editable. [[1]](https://old.reddit.com/r/BasketballGM/comments/dgk9d1/some_minor_updates_in_version_201910111184/)
+
+* 2019-10-11: Fixed bug where All-Star starters were incorrect. [[1]](https://old.reddit.com/r/BasketballGM/comments/dgk9d1/some_minor_updates_in_version_201910111184/)
+
+* 2019-10-11: New frivolities: Most Teams and Oldest Former Players. [[1]](https://old.reddit.com/r/BasketballGM/comments/dgk9d1/some_minor_updates_in_version_201910111184/)
+
+* **2019-10-10: New player faces! [[1]](https://old.reddit.com/r/BasketballGM/comments/dg1jrp/new_player_faces_in_version_201910101057/) [[2]](https://old.reddit.com/r/Football_GM/comments/dg1jqt/new_player_faces_in_version_201910101058/) [[3]](https://old.reddit.com/r/BasketballGM/comments/dfp99h/thoughts_on_changing_the_default_cartoon_faces_to/)**
+
+Commits older than https://github.com/dumbmatter/gm-games/commits/master?after=c7f56be87febd2c58f4f5ed61e34a461369c9532+0 are not listed here. Maybe some day I will go through them and update this!

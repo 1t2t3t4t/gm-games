@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
   <head>
     <meta charset="utf-8">
     <title>Basketball GM</title>
@@ -11,18 +11,21 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="apple-touch-icon" href="/ico/icon192.png">
 
     <meta name="Description" content="A single-player basketball simulation game. Make trades, set rosters, draft players, and try to build the next dynasty.">
 
     <script src="//d2wy8f7a9ursnm.cloudfront.net/v6/bugsnag.min.js"></script>
 
     <script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script>
-    <script async="async" src="https://basketball-gm.com/bbgm-ads/BBGM_ADS_FILENAME.js"></script>
+    <script async="async" src="https://basketball-gm.com/prebid/BBGM_ADS_FILENAME.js"></script>
     <script type="text/javascript">
       var googletag = googletag || {};
       googletag.cmd = googletag.cmd || [];
       var bbgmAds = bbgmAds || {};
       bbgmAds.cmd = bbgmAds.cmd || [];
+
+      !function(a9,a,p,s,t,A,g){if(a[a9])return;function q(c,r){a[a9]._Q.push([c,r])}a[a9]={init:function(){q("i",arguments)},fetchBids:function(){q("f",arguments)},setDisplayBids:function(){},targetingKeys:function(){return[]},_Q:[]};A=p.createElement(s);A.async=!0;A.src=t;g=p.getElementsByTagName(s)[0];g.parentNode.insertBefore(A,g)}("apstag",window,document,"script","//c.amazon-adsystem.com/aax2/apstag.js");
     </script>
 
     <script type="text/javascript">
@@ -51,6 +54,8 @@
       window.bbgmVersionWorker = "???";
       window.useSharedWorker = typeof SharedWorker !== 'undefined' && !isBuggyFirefox();
 
+      window.leagueFileHashes = {};
+
       function loadCSS(filename){
         var el = document.createElement("link");
         el.setAttribute("rel", "stylesheet");
@@ -59,10 +64,16 @@
         return el;
       }
       function getTheme() {
+        const dark = "dark-CSS_HASH_DARK";
+        const light = "light-CSS_HASH_LIGHT";
         try {
-          return localStorage.getItem("theme") === "dark" ? "dark" : "light";
+          const local = localStorage.getItem("theme");
+          if (local !== null) {
+            return local === "dark" ? dark : light;
+          }
+          return matchMedia("(prefers-color-scheme: dark)").matches ? dark : light;
         } catch (err) {
-          return "light";
+          return light;
         }
       }
       window.themeCSSLink = loadCSS("gen/" + getTheme() + ".css");
@@ -137,9 +148,9 @@
     </script>
   </head>
 
-  <body>
+  <body class="h-100">
 
-    <div id="content">
+    <div id="content" class="h-100 d-flex flex-column">
       <div style="margin: 0 15px">
         <div style="max-width: 360px; margin: 0 auto">
           <h1 style="text-align: center">Loading...</h1>
@@ -257,7 +268,7 @@
         openRequest.onerror = function (evt) {
           console.error("Error openining test database:");
           console.error(evt.target.error);
-          if (evt.target.error.message.includes("aborted")) {
+          if (evt.target.error.message.includes("aborted") || evt.target.error.message.includes("full")) {
             // Error like "Version change transaction was aborted in upgradeneeded event handler." is probably quota error - try to continue loading BBGM and hope for the best
             cb("good");
           } else {
@@ -325,13 +336,22 @@
         }
       };
 
+      var supportsAsync = function () {
+        try {
+          eval("async function foo() {}");
+          return true;
+        } catch (err) {
+          return false;
+        }
+      };
+
       goodIDB(function (idbResult) {
         if (idbResult !== "good" || !supportsArrowFunctions() || !supportsSymbol()) {
           var errorMsg;
           if (idbResult === "open-failed") {
             errorMsg = '<p><b>Error!</b> Cannot store data.</p><p>If you have disabled cookies in your browser, you must enable them to play Basketball GM.</p><p>If you\'re using Firefox\'s Private Browsing mode, there is currently a bug in Firefox that prevents Basketball GM from running. Either load Basketball GM outside of Private Browsing mode, or try using <a href="https://www.google.com/chrome/">Google Chrome</a> instead.</p>';
           } else {
-            errorMsg = '<p><b>Error!</b> Your browser is not modern enough to run Basketball GM. The latest version of <a href="https://www.google.com/chrome/">Google Chrome</a> works best.</p>';
+            errorMsg = '<p><b>Error!</b> Your browser is not modern enough to run Basketball GM. The latest versions of <a href="https://www.google.com/chrome/">Google Chrome</a> and <a href="https://www.mozilla.org/en-US/firefox/">Mozilla Firefox</a> work best.</p>';
           }
 
           // Special error for Apple's mobile devices, as that's the only platform that is totally unsupported (no alternative browser to install)
@@ -345,10 +365,16 @@
         } else {
           withGoodBrowser();
 
+          var safari10NeedsLegacy = navigator.userAgent.indexOf("Safari/602") >= 0 || navigator.userAgent.indexOf("Safari/603") >= 0;
+
           var body = document.getElementsByTagName('body').item(0);
           var script = document.createElement('script');
           script.type = 'text/javascript';
-          script.src = "/gen/ui-" + bbgmVersion + ".js";
+          if (supportsAsync() && !safari10NeedsLegacy) {
+            script.src = "/gen/ui-" + bbgmVersion + ".js";
+          } else  {
+            script.src = "/gen/ui-legacy-" + bbgmVersion + ".js";
+          }
           body.appendChild(script);
 
           if ('serviceWorker' in navigator) {
@@ -357,5 +383,7 @@
         }
       });
     </script>
+
+    <script async="async" src="/files/ads/ads.js"></script>
   </body>
 </html>

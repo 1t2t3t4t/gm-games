@@ -10,7 +10,7 @@ Copyright (C) Jeremy Scheff. All rights reserved.
 * Website: <https://basketball-gm.com/> and <https://football-gm.com/>
 * Development: <https://github.com/dumbmatter/gm-games>
 * Discussion: <https://www.reddit.com/r/BasketballGM/> or
-<https://www.reddit.com/r/Football_GM/> or <https://discord.gg/E9HUwbq>
+<https://www.reddit.com/r/Football_GM/> or <https://discord.gg/caPFuM9>
 
 **This project is NOT open source, but it is also not completely closed. Please
 see LICENSE.md for details.**
@@ -44,7 +44,7 @@ License Agreement from YOUR_NAME_HERE (GITHUB_USERNAME_HERE)".
 
 First, make sure you're using [Node.js](https://nodejs.org/) v6 or higher, older
 versions probably won't work. Then, all of the tooling used in development can
-be set up by simply installing [yarn](https://yarnpkg.com/) and running
+be set up by simply installing [Yarn 1](https://classic.yarnpkg.com/) and running
 
     yarn
 
@@ -92,40 +92,25 @@ necessary.
 The mod_rewrite rules in `.htaccess` let the game run in Apache. Everything
 should work if you point it at the `build` folder with mod_rewrite enabled.
 
-#### Service worker
-
-A service worker is used for offline caching. This can make development tricky,
-because if you load the game in your browser, make a change, wait for
-build/watch to finish, and then reload... you will not see your change because
-it will cache the original version and then not update it on a reload. This is
-the normal behavior for service workers (they only switch to a new version when
-you actually close the website and reopen it, not on a reload), but it makes
-development annoying.
-
-To work around that, in Chrome you can [use the "Update on reload" option][1]
-and keep your devtools open. Then reloading will always get you the latest
-version.
-
-Even with that, ctrl+shift+r may be a good idea to make sure you're seeing your
-latest changes.
-
-[1]: https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle#update_on_reload
-
 ### Step 4 - Testing
 
-ESLint, Flow, and, stylelint are used to enforce some coding standards. To run
-them on the entire codebase, run
+TypeScript and ESLint are used to enforce some coding standards. To run them on
+the entire codebase, run
 
     yarn run lint
 
 Integration and unit tests are bunched together in the `js/test` folder.
-Coverage is not great. They can be run from the command line in Karma with
+Coverage is not great. They can be run from the command line with
 
     yarn test
 
-or
+There is also a single end-to-end test which creates a league and simulates a
+season. To execute the end-to-end test, run
 
-    yarn run test-watch
+    yarn run test-e2e
+
+For the end-to-end test, by default it is basketball. If you want it to do
+football, stick `SPORT=football ` in front.
 
 ### Code Overview
 
@@ -152,6 +137,45 @@ write it back to the cache manually by calling `idb.cache.*.put`.
 
 Also in the worker, there is a global variable `self.bbgm` which gives you
 access to many of the internal functions of the game from within your browser.
+
+### Shared Worker Debugging
+
+As mentioned above, the core of a game runs in a Shared Worker. This makes
+debugging a little tricky. For instance, in Chrome, if you `console.log`
+something inside the Shared Worker, you won't see it in the normal JS console.
+Instead, you need to go to chrome://inspect/#workers and click "Inspect" under
+<http://localhost/gen/worker.js>.
+
+In any browser, if you have two tabs open and you reload one of them, the worker
+process will not reload. So make sure you close all tabs except one before
+reloading if you want to see changes in the worker.
+
+And another note only for Chrome... if you have the worker console open and you
+reload the page, [it will automatically set a debugger breakpoint at the
+beginning of
+worker.js](https://bugs.chromium.org/p/chromium/issues/detail?id=771018). So you
+will have to click "resume" to continue loading it, every single time.
+
+### Service Worker
+
+This only applies if you use Apache, not if you use `yarn run start`!
+
+A service worker is used for offline caching. This can make development tricky,
+because if you load the game in your browser, make a change, wait for
+build/watch to finish, and then reload... you will not see your change because
+it will cache the original version and then not update it on a reload. This is
+the normal behavior for service workers (they only switch to a new version when
+you actually close the website and reopen it, not on a reload), but it makes
+development annoying.
+
+To work around that, in Chrome you can [use the "Update on reload" option][1]
+and keep your devtools open. Then reloading will always get you the latest
+version.
+
+Even with that, ctrl+shift+r may be a good idea to make sure you're seeing your
+latest changes.
+
+[1]: https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle#update_on_reload
 
 ### Git Workflow
 
