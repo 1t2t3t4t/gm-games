@@ -1,4 +1,6 @@
 .notification-container {
+	z-index: 2000;
+
 	ul,
 	li {
 		padding: 0;
@@ -7,7 +9,6 @@
 
 	ul {
 		position: fixed;
-		bottom: 0;
 		right: 6px;
 		top: 0;
 		display: flex;
@@ -23,18 +24,22 @@
 		bottom: 40px;
 	}
 }
+.trade-extra-margin-bottom {
+	margin-bottom: 40px;
+}
 
 .notification-close-all {
-	background-color: #000;
+	// Use this rather than opacity to set transpacency so it doesn't affect button children
+	background-color: rgba(0, 0, 0, 0.8);
+
 	border-radius: 3px;
 	box-shadow: #999 0 0 12px;
-	color: #c0c0c0; // Try to match normal close button
-	opacity: 0.8;
+	color: rgba(255, 255, 255, 0.7); // Match normal close button
 
 	&:hover {
 		box-shadow: #000 0 0 12px;
 		color: #fff;
-		opacity: 1;
+		background-color: rgba(0, 0, 0, 1);
 	}
 
 	font-size: 20px;
@@ -50,12 +55,13 @@
 }
 
 .notification {
-	background-color: #000;
+	// Use this rather than opacity to set transpacency so it doesn't affect button children
+	background-color: rgba(0, 0, 0, 0.8);
+	color: rgba(255, 255, 255, 0.8);
+
 	border-radius: 3px;
 	box-shadow: #999 0 0 12px;
-	color: #fff;
 	margin: 0 0 6px;
-	opacity: 0.8;
 	padding: 6px 12px;
 	pointer-events: auto;
 	position: relative;
@@ -64,7 +70,7 @@
 
 	&:hover {
 		box-shadow: #000 0 0 12px;
-		opacity: 1;
+		background-color: rgba(0, 0, 0, 1);
 	}
 
 	a {
@@ -82,17 +88,16 @@
 	font-size: 20px;
 	background: transparent;
 	border: 0;
-	color: #fff !important;
+	color: rgba(255, 255, 255, 0.7);
 	cursor: pointer;
 	padding: 0 7px;
-	opacity: 0.7;
 	position: absolute;
 	top: 0;
 	right: 0;
 
 	&:hover,
 	&:focus {
-		opacity: 1;
+		color: #fff;
 	}
 }
 

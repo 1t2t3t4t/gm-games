@@ -1,9 +1,10 @@
 const fs = require("fs");
-const { render, Box, Color } = require("ink");
+const { render, Box, Text } = require("ink");
 const Spinner = require("ink-spinner").default;
 const logSymbols = require("log-symbols");
 const React = require("react");
 const watchCSS = require("./watchCSS");
+const watchFiles = require("./watchFiles");
 const watchJS = require("./watchJS");
 const watchJSONSchema = require("./watchJSONSchema");
 
@@ -37,7 +38,11 @@ const reducer = (files, { type, filename, error }) => {
 				},
 			};
 		case "end": {
-			const { size } = fs.statSync(filename);
+			let size;
+			if (filename !== "static files") {
+				size = fs.statSync(filename).size;
+			}
+
 			return {
 				...files,
 				[filename]: {
@@ -67,12 +72,13 @@ const reducer = (files, { type, filename, error }) => {
 /* eslint-disable react/prop-types */
 const File = ({ filename, info }) => {
 	if (info.error) {
-		return `${logSymbols.error} ${filename}: ${info.error.stack}`;
+		return (
+			<Text>{`${logSymbols.error} ${filename}: ${info.error.stack}`}</Text>
+		);
 	}
 
-	const time = (info.building
-		? info.dateStart
-		: info.dateEnd
+	const time = (
+		info.building ? info.dateStart : info.dateEnd
 	).toLocaleTimeString();
 	const numMillisecondsSinceTime = new Date() - info.dateEnd;
 
@@ -80,35 +86,42 @@ const File = ({ filename, info }) => {
 
 	if (numMillisecondsSinceTime < TIME_CUTOFF_GREEN) {
 		if (!info.building) {
-			colorParams.green = true;
+			colorParams.color = "green";
 		}
 	} else if (numMillisecondsSinceTime < TIME_CUTOFF_YELLOW) {
-		colorParams.yellow = true;
+		colorParams.color = "yellow";
 	} else {
 		// eslint-disable-next-line no-lonely-if
 		if (info.building) {
-			colorParams.red = true;
+			colorParams.color = "red";
 		}
 	}
 
 	if (info.building) {
 		return (
 			<Box>
-				<Color yellow>
+				<Text color="yellow">
 					<Spinner type="dots" />
-				</Color>{" "}
-				{filename}: build started at <Color {...colorParams}>{time}</Color>
+				</Text>
+				<Text>
+					{" "}
+					{filename}: build started at <Text {...colorParams}>{time}</Text>
+				</Text>
 			</Box>
 		);
 	}
 
 	const duration = (info.dateEnd - info.dateStart) / 1000;
-	const megabytes = (info.size / 1024 / 1024).toFixed(2);
+	const megabytes =
+		info.size !== undefined ? (info.size / 1024 / 1024).toFixed(2) : undefined;
 
 	return (
 		<Box>
-			{logSymbols.success} {filename}: {megabytes} MB in {duration} seconds at{" "}
-			<Color {...colorParams}>{time}</Color>
+			<Text>
+				{logSymbols.success} {filename}:{" "}
+				{megabytes !== undefined ? `${megabytes} MB in ` : ""}
+				{duration} seconds at <Text {...colorParams}>{time}</Text>
+			</Text>
 		</Box>
 	);
 };
@@ -141,13 +154,14 @@ const Watch = () => {
 			});
 		};
 
-		// This will complete its initial write before watchJS runs, which is good because then the schema
-		// file will be available to be included in the JS bundle.
-		watchJSONSchema(updateStart, updateEnd, updateError);
+		// Needs to run first, to create output folder
+		watchFiles(updateStart, updateEnd, updateError);
 
-		watchJS(updateStart, updateEnd, updateError);
+		// Schema is needed for JS bunlde, and watchJSONSchema is async
+		watchJSONSchema(updateStart, updateEnd, updateError).then(() => {
+			watchJS(updateStart, updateEnd, updateError);
+		});
 
-		// Since watchJS is async, this will run in parallel
 		watchCSS(updateStart, updateEnd, updateError);
 	}, []);
 

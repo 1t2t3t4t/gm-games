@@ -41,7 +41,8 @@ $text-muted: $gray-400;
 		color: $gray-700;
 	}
 }
-.btn-link {
+.btn-link,
+.btn-link:hover {
 	color: $primary;
 }
 
@@ -87,6 +88,15 @@ $text-muted: $gray-400;
 		color: $black !important;
 	}
 }
+.bg-success {
+	background-color: darken($green, 20) !important;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: darken($green, 25) !important;
+	}
+}
 
 .btn-secondary {
 	color: $white;
@@ -102,8 +112,9 @@ $text-muted: $gray-400;
 	}
 }
 
+.active.btn-light-bordered,
 .btn-light-bordered:hover {
-	background-color: $gray-100;
+	background-color: $gray-100 !important;
 }
 
 .badge-danger {
@@ -113,13 +124,6 @@ $text-muted: $gray-400;
 
 a.play-button {
 	color: $black !important;
-	background-color: darken($green, 20) !important;
-
-	&:hover,
-	&:active,
-	&:focus {
-		background-color: darken($green, 25) !important;
-	}
 }
 
 .notification,
@@ -147,6 +151,20 @@ a.god-mode.active {
 .sidebar a.god-mode.active {
 	background-color: darken($purple, 10);
 	color: $primary;
+}
+
+.btn-god-mode {
+	@include button-variant(darken($purple, 20), $gray-400);
+	&,
+	&:active,
+	&:focus,
+	&:not(:disabled):hover {
+		color: $black !important;
+	}
+}
+
+.alert-god-mode {
+	background-color: darken($purple, 45) !important;
 }
 
 .watch-active,
@@ -192,6 +210,39 @@ table.table thead .sorting::after {
 	}
 }
 
+.dark-select__control {
+	background-color: $white !important;
+}
+.dark-select__control--is-focused {
+	border-color: $primary !important;
+	box-shadow: $primary 0 0 1px !important;
+}
+.dark-select__single-value {
+	color: $black !important;
+}
+.dark-select__input {
+	background-color: $white !important;
+	color: $black !important;
+}
+
+.dark-select__menu-list {
+	background-color: $white !important;
+	color: $black !important;
+}
+.dark-select__indicator svg {
+	color: $gray-300 !important;
+	&:not(:disabled):hover {
+		color: $gray-400 !important;
+	}
+}
+.dark-select__option {
+	background-color: $white !important;
+	color: $black !important;
+}
+.dark-select__option:hover {
+	background-color: $gray-100 !important;
+	color: $black !important;
+}
 .table-accent {
 	background-color: rgba(255, 255, 255, 0.1);
 }
@@ -209,7 +260,27 @@ table.table thead .sorting::after {
 }
 
 // For Firefox: https://mail.google.com/mail/u/0/#sent/FMfcgxwGDDlBLslqTJrgVGGsTVMGLjNx?compose=lqrsljbfHSlTfwlWfkfgJZGFBMJhCZGwxnNHFrchrZwsNsKzFxrVPNQnHBRBvMchPkvLxQTLsjknLTNJK
-input[type="checkbox"][disabled] {
+input[type="checkbox"][disabled]:not(.custom-control-input) {
 	cursor: not-allowed;
 	opacity: 0.65;
+}
+
+.badge-primary,
+.badge-secondary,
+.badge-success,
+.badge-info,
+.badge-warning,
+.badge-dark,
+.badge-yellow {
+	color: $white;
+}
+
+.badge-danger,
+.badge-light {
+	color: $black;
+}
+
+:root {
+	--gradient-base-danger: #{derive-rgb-values-from-hex(darken($danger, 25%))};
+	--gradient-base-success: #{derive-rgb-values-from-hex(darken($success, 25%))};
 }

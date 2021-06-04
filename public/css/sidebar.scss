@@ -55,17 +55,21 @@
 	.sidebar {
 		display: block;
 	}
-	#actual-content {
+	#actual-content,
+	#main-footer {
 		margin-left: 161px;
 	}
-	#bbgm-ads-top {
+	#basketball-gm_leaderboard_atf,
+	#football-gm_leaderboard_atf,
+	#zen-gm_leaderboard_atf {
 		margin-left: 161px;
 	}
 	.league-top-bar {
 		margin-left: 161px;
 	}
 	.title-bar {
-		margin-left: 161px;
+		// -17 for left margin in .title-bar
+		margin-left: 144px !important;
 	}
 }
 

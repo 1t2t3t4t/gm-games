@@ -1,2 +1,1 @@
-tools/lib/process-rosters/*.json
-public/basketball/leagues/*.json
+data/real-player-*.json

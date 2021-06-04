@@ -5,6 +5,48 @@ $dropdown-link-active-bg: #f8f9fa !default; // Matches hover: $gray-100
 $font-size-base: 0.8125rem;
 $black: #000 !default;
 
+// Country list is from CountryFlag.tsx, inlined here to skip a few of the special ones like the UN and EU flags
+$include: af, ax, al, dz, as, ad, ao, ai, ag, ar, am, aw, au, at, az, bs, bh, bd,
+	bb, by, be, bz, bj, bm, bt, bo, bq, ba, bw, br, io, bn, bg, bf, bi, cv, cv, kh,
+	cm, ca, ky, cf, td, cl, cn, cx, cc, co, km, ck, cr, hr, cu, cw, cy, cz, ci, cd,
+	cd, dk, dj, dm, do, ec, eg, sv, gb-eng, gq, er, ee, et, fk, fo, fm, fj, fi, fr,
+	gf, pf, tf, ga, gm, ge, de, gh, gi, gr, gl, gd, gp, gu, gt, gg, gn, gw, gy, ht,
+	va, hn, hk, hu, is, in, id, ir, iq, ie, im, il, it, jm, jp, je, jo, kz, ke, ki,
+	xk, kw, kg, la, lv, lb, ls, lr, ly, li, lt, lu, mo, mg, mw, my, mv, ml, mt, mh,
+	mq, mr, mu, yt, mx, md, mc, mn, me, ms, ma, mz, mm, na, nr, np, nl, nc, nz, ni,
+	ne, ng, nu, nf, kp, mk, mk, gb-nir, mp, no, om, pk, pw, pa, pg, py, pe, ph, pn,
+	pl, pt, pr, qa, cg, ro, ru, rw, re, bl, sh, kn, lc, mf, pm, vc, ws, sm, st, sa,
+	gb-sct, sn, rs, sc, sl, sg, sx, sk, si, sb, so, za, gs, kr, ss, es, lk, ps, sd,
+	sr, sj, sz, se, ch, sy, tw, tj, tz, th, tl, tl, tg, tk, to, tt, tn, tr, tm, tc,
+	tv, ug, ua, ae, gb, um, us, us, uy, uz, vu, ve, vn, vg, vi, vi, gb-wls, wf, eh,
+	ye, zm, zw;
+
+// Inlined from flag-icon.scss to save the square flag classes
+$flag-icon-css-path: "/img/flags";
+.flag-icon {
+	background-size: contain;
+	background-position: 50%;
+	background-repeat: no-repeat;
+	position: relative;
+	display: inline-block;
+	width: (4 / 3) * 1em;
+	line-height: 1em;
+	&:before {
+		content: "\00a0";
+	}
+	&.flag-icon-squared {
+		width: 1em;
+	}
+}
+@mixin flag-icon($country) {
+	.flag-icon-#{$country} {
+		background-image: url(#{$flag-icon-css-path}/#{$country}.svg);
+	}
+}
+@each $country in $include {
+	@include flag-icon($country);
+}
+
 // Taken from bootstrap.scss, but with unused things deleted
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
@@ -19,6 +61,7 @@ $black: #000 !default;
 @import "node_modules/bootstrap/scss/dropdown";
 @import "node_modules/bootstrap/scss/button-group";
 @import "node_modules/bootstrap/scss/input-group";
+@import "node_modules/bootstrap/scss/custom-forms";
 @import "node_modules/bootstrap/scss/nav";
 @import "node_modules/bootstrap/scss/navbar";
 @import "node_modules/bootstrap/scss/card";
@@ -31,15 +74,12 @@ $black: #000 !default;
 @import "node_modules/bootstrap/scss/tooltip";
 @import "node_modules/bootstrap/scss/popover";
 @import "node_modules/bootstrap/scss/utilities";
+@import "node_modules/bootstrap/scss/spinners";
 
 @import "datatable";
 @import "bbgm-notifications";
 @import "glyphicons";
 @import "sidebar";
-
-body {
-	padding-top: 52px;
-}
 
 h1 {
 	font-size: 24px;
@@ -61,32 +101,17 @@ h5 {
 	padding: 0 15px;
 	width: 100%;
 }
-.skyscraper-wrapper {
-	display: none;
-}
 
-@include media-breakpoint-up(xl) {
-	.bbgm-container {
-		max-width: map-get($grid-breakpoints, xl);
-	}
-}
 @media screen and (min-width: map-get($grid-breakpoints, xl) + 190px) {
-	.bbgm-container {
-		max-width: unset;
-		padding-right: 190px;
-	}
-	.skyscraper-wrapper {
+	#basketball-gm_right_rail,
+	#football-gm_right_rail,
+	#zen-gm_right_rail {
 		display: block;
-		position: absolute;
-		top: 0;
+		position: sticky;
+		top: 60px;
 		right: 0;
-		height: 600px;
-		width: 190px;
-	}
-	#bbgm-ads-skyscraper {
 		width: 160px;
 		height: 600px;
-		margin: 0 auto;
 	}
 }
 
@@ -103,7 +128,8 @@ h5 {
 // This is so "Football GM" takes up the same space as "Basketball GM", allowing the Play dropdown to align with the menu on the left.
 @include media-breakpoint-up(xl) {
 	.navbar-brand {
-		min-width: 129px;
+		min-width: 145px;
+		margin-right: 0;
 	}
 }
 
@@ -143,27 +169,38 @@ a.god-mode.active {
 	padding: 0 3px;
 }
 
+.btn-god-mode {
+	@include button-variant($purple, $gray-400);
+}
+
+.alert-god-mode {
+	background-color: lighten($purple, 40) !important;
+}
+
 .play-button {
 	font-size: 1.01562rem;
 	padding: 14px !important;
 	height: 51px;
-
-	@extend .bg-success;
-	@extend .text-white;
 }
 
 .dropdown-item {
 	cursor: pointer;
 }
 
-.kbd-parent {
-	position: relative;
-	padding-right: 70px;
-}
 .kbd {
-	position: absolute;
-	right: 20px;
-	top: 4px;
+	display: none;
+}
+@include media-breakpoint-up(sm) {
+	.kbd-parent {
+		position: relative;
+		padding-right: 70px;
+	}
+	.kbd {
+		display: block;
+		position: absolute;
+		right: 20px;
+		top: 4px;
+	}
 }
 
 .dashboard-top-link {
@@ -187,29 +224,41 @@ a.god-mode.active {
 	color: $gray-800;
 	font-size: 15px;
 	background-repeat: no-repeat;
+	padding-right: 20px;
+	padding-top: 7px;
 
 	&:hover {
 		color: $black;
 	}
 }
 
-.dashboard-top-link-other-football {
-	background-image: url("https://play.basketball-gm.com/ico/icon70.png");
-	background-position: 100px 41px;
-}
 .dashboard-top-link-other-basketball {
+	background-image: url("https://play.basketball-gm.com/ico/icon70.png");
+	background-position: 90px 34px;
+}
+.dashboard-top-link-other-football {
 	background-image: url("https://play.football-gm.com/ico/icon70.png");
+	background-position: 81px 34px;
+}
+.dashboard-top-link-other-hockey {
+	background-image: url("https://hockey.zengm.com/ico/icon70.png");
 	background-position: 81px 34px;
 }
 
 @include media-breakpoint-down(xs) {
 	.dashboard-top-wrapper {
 		text-align: center;
-	}
-	a.dashboard-top-link-other-basketball {
-		width: 326px;
-		height: inherit;
-		background-position: 236px 0px;
+
+		a.dashboard-top-link-other {
+			width: 326px;
+			height: inherit;
+		}
+		.dashboard-top-link-other-hockey {
+			background-position: 247px 0px;
+		}
+		.dashboard-top-link-other-football {
+			background-position: 243px 0px;
+		}
 	}
 }
 
@@ -256,6 +305,10 @@ a.god-mode.active {
 
 table {
 	white-space: nowrap;
+}
+
+.table {
+	font-variant: tabular-nums;
 }
 
 .table-bordered {
@@ -312,10 +365,6 @@ table {
 	}
 }
 
-.trade-summary {
-	background-color: $white;
-}
-
 .select-team {
 	width: 203px;
 }
@@ -324,7 +373,6 @@ table {
 	height: 180px;
 	float: left;
 	margin-right: 10px;
-	margin-top: -20px;
 	width: 120px;
 }
 
@@ -337,18 +385,8 @@ table {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: contain;
-	margin: 0.25rem 1rem 0 0;
-	width: 120px;
-	height: 120px;
-}
-
-.team-picture-splash {
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: contain;
-	width: 90px;
-	height: 90px;
-	float: left;
+	width: 128px;
+	height: 128px;
 }
 
 .skill {
@@ -362,6 +400,20 @@ table {
 .skills-alone {
 	margin-left: -5px;
 	vertical-align: 2%;
+}
+
+.jersey-number-name {
+	font-size: 10px;
+	line-height: 18px;
+	vertical-align: 2%;
+	display: inline-block;
+	min-width: 15px;
+}
+
+.jersey-number-popover {
+	font-size: 10px;
+	line-height: 18px;
+	vertical-align: 4%;
 }
 
 .watch,
@@ -572,7 +624,7 @@ tr.table-warning > td {
 	@extend .table-warning;
 }
 tr.table-warning:hover > td {
-	@extend .table-warning:hover;
+	@extend .table-warning, :hover;
 }
 
 // Keep in sync with setPlayByPlayDivHeight
@@ -591,14 +643,26 @@ tr.table-warning:hover > td {
 	}
 }
 
+// Keep in sync with trade/index.tsx
+@include media-breakpoint-up(md) {
+	.trade-affix {
+		position: -webkit-sticky;
+		position: sticky;
+		top: 60px;
+	}
+	.trade-items {
+		overflow: auto;
+	}
+}
+
 .multi-team-menu {
 	background-color: $white;
 	opacity: 0.9;
 	position: fixed;
 	right: 6px;
-	bottom: 0;
 	padding-bottom: 6px;
 	border-radius: 0.25em 0.25em 0 0;
+	z-index: 1000;
 }
 
 .dropdown-toggle {
@@ -625,6 +689,12 @@ tr.table-warning:hover > td {
 	@extend .btn-light;
 	background-color: $white;
 	border: 1px solid $gray-400 !important;
+	color: $gray-700 !important;
+}
+.btn-light-bordered-primary {
+	@extend .btn-light;
+	background-color: $white;
+	border: 1px solid $blue !important;
 	color: $gray-700 !important;
 }
 
@@ -708,6 +778,10 @@ tr.table-warning:hover > td {
 	}
 }
 
+.table tr {
+	min-height: 30px;
+}
+
 .table-responsive {
 	margin-bottom: 1rem;
 
@@ -724,7 +798,7 @@ tr.table-warning:hover > td {
 }
 
 // Hack to get rid of annoying "Privacy Settings" tab from Quantcast CMP
-.qc-cmp-persistent-link {
+.qc-cmp2-persistent-link {
 	display: none !important;
 }
 
@@ -757,20 +831,24 @@ tr.table-warning:hover > td {
 	.d-xxl-inline {
 		display: inline !important;
 	}
+	.col-xxl-4 {
+		flex: 0 0 33.33333%;
+		max-width: 33.33333%;
+	}
 	/*.d-xxl-inline-block {
-    display: inline-block !important; }
+	display: inline-block !important; }
   .d-xxl-block {
-    display: block !important; }
+	display: block !important; }
   .d-xxl-table {
-    display: table !important; }
+	display: table !important; }
   .d-xxl-table-row {
-    display: table-row !important; }
+	display: table-row !important; }
   .d-xxl-table-cell {
-    display: table-cell !important; }
+	display: table-cell !important; }
   .d-xxl-flex {
-    display: flex !important; }
+	display: flex !important; }
   .d-xxl-inline-flex {
-    display: inline-flex !important; } }*/
+	display: inline-flex !important; } }*/
 }
 
 .chart-legend {
@@ -796,11 +874,24 @@ tr.table-warning:hover > td {
 	}
 }
 
+.cursor-default {
+	cursor: default;
+}
 .cursor-pointer {
 	cursor: pointer;
 }
+.cursor-grab {
+	cursor: grab;
+}
+.cursor-grabbing {
+	cursor: grabbing;
+}
 
 .title-bar {
+	margin-left: -17px;
+	h1 {
+		margin-left: 17px;
+	}
 	min-height: 52px;
 	select {
 		font-size: 14px;
@@ -818,7 +909,8 @@ tr.table-warning:hover > td {
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	appearance: none;
-	padding: 0 13px;
+	padding-left: 2px;
+	padding-right: 13px;
 	background-color: inherit;
 	border: 0;
 	color: inherit;
@@ -846,15 +938,13 @@ tr.table-warning:hover > td {
 	max-width: 400px;
 }
 
+.score-box-deadline {
+	height: 54px;
+}
+
 .score-box-header {
 	height: 27px;
 	margin-top: -27px;
-}
-
-.score-box-logo {
-	margin-left: 1px;
-	height: 24px;
-	width: 24px;
 }
 
 .score-box-spread {
@@ -883,9 +973,285 @@ tr.table-warning:hover > td {
 
 .form-check-input {
 	// Default does not do well with altered font-size-base
-	margin-top: 4px;
+	margin-top: 3px;
 }
 
 .text-warning {
 	color: darken($yellow, 10%) !important;
+}
+
+.badge-news {
+	font-size: inherit;
+	font-weight: inherit;
+}
+.badge-darkblue {
+	background-color: #007bff;
+	color: #fff;
+}
+.badge-orange {
+	background-color: lighten(#fd7e14, 10);
+	color: #000;
+}
+
+.sort-inside-modal {
+	z-index: 999999999;
+}
+
+button.live-game-sim-more {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left-width: 0 !important;
+}
+
+.player-stats-summary {
+	td,
+	th {
+		border-bottom-width: 0 !important;
+		border-top-width: 0 !important;
+	}
+}
+
+@include media-breakpoint-down(xs) {
+	// Same as .table-responsive
+	.player-stats-summary {
+		display: block;
+		width: 100%;
+		overflow-x: auto;
+		// https://github.com/twbs/bootstrap/issues/29313#issuecomment-589969379
+		-webkit-overflow-scrolling: auto;
+
+		.table {
+			margin-bottom: 0;
+		}
+	}
+}
+
+@include media-breakpoint-up(sm) {
+	.table-separator-right {
+		border-right: 2px solid $gray-300;
+		padding-right: 1em !important;
+	}
+	.table-separator-left {
+		padding-left: 1em !important;
+	}
+}
+
+.text-yellow {
+	color: $yellow;
+}
+
+.badge-yellow {
+	@include badge-variant($yellow);
+}
+
+.ring::after {
+	color: $yellow;
+	content: "\274d";
+	font-weight: bold;
+}
+
+@include media-breakpoint-up(sm) {
+	.player-bio {
+		min-width: 370px;
+		margin-right: 1em;
+	}
+}
+
+.ratings-overview {
+	width: 100%;
+}
+@include media-breakpoint-up(sm) {
+	.ratings-overview {
+		display: inline-block;
+		width: inherit;
+	}
+}
+
+.settings-description > p:last-child {
+	margin-bottom: 0 !important;
+}
+
+.fake-list-group-item {
+	background-color: $table-accent-bg;
+	padding: 0.5rem 1rem;
+	width: 100%;
+}
+.settings-striped-bg-alt {
+	background-color: inherit;
+}
+@include media-breakpoint-up(md) {
+	.settings-striped-bg-alt {
+		background-color: $table-accent-bg;
+	}
+	.fake-list-group-item {
+		margin-bottom: 30px;
+	}
+}
+@include media-breakpoint-down(xs) {
+	.fake-list-group-item {
+		padding-right: 0;
+		padding-left: 0;
+		border-right: 0 !important;
+		border-left: 0 !important;
+		border-radius: 0 !important;
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	// Make it so the striped-bg color goes all the way to the edge of the screen
+	.settings-col {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.fake-list-group-item {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+.settings-buttons {
+	position: sticky;
+
+	// To make it go over the Bootstrap custom form controls, like switch
+	z-index: 2;
+}
+@include media-breakpoint-down(md) {
+	.settings-buttons {
+		margin: 0 -15px;
+		border-top-left-radius: 0 !important;
+		border-top-right-radius: 0 !important;
+	}
+}
+
+a.anchor {
+	display: block;
+	position: relative;
+	top: -60px;
+	visibility: hidden;
+}
+
+.settings-wrapper {
+	display: flex;
+	flex-direction: column-reverse;
+}
+.settings-shortcuts li {
+	display: inline;
+	&:not(:last-child):not(:first-child):after {
+		content: " | ";
+	}
+}
+@include media-breakpoint-up(lg) {
+	.settings-wrapper {
+		flex-direction: row;
+	}
+	.settings-shortcuts {
+		align-self: flex-start;
+		position: sticky;
+		top: 60px;
+		margin-left: 1rem;
+
+		li {
+			margin-bottom: 0.25rem;
+			display: block;
+			&:not(:last-child):not(:first-child):after {
+				content: none;
+			}
+		}
+	}
+}
+
+#basketball-gm_mobile_leaderboard,
+#football-gm_mobile_leaderboard,
+#zen-gm_mobile_leaderboard {
+	z-index: 1000; // Behind sidebar
+	bottom: 0;
+	padding-top: 2px;
+	position: fixed;
+	left: 0;
+	right: 0;
+	text-align: center;
+	background-color: rgba(247, 247, 247, 0.9);
+	vertical-align: bottom !important;
+	width: 100vw;
+
+	// override inline styles in JS file
+	margin-bottom: 0 !important;
+	height: 52px;
+}
+
+.SortableHelper {
+	display: flex;
+}
+.SortableHelper button {
+	white-space: nowrap;
+}
+
+@include media-breakpoint-up(sm) {
+	.border-radius-top-sm-0 {
+		border-top-left-radius: 0 !important;
+		border-top-right-radius: 0 !important;
+	}
+
+	.border-radius-bottom-sm-0 {
+		border-bottom-left-radius: 0 !important;
+		border-bottom-right-radius: 0 !important;
+	}
+
+	.border-top-sm-0 {
+		border-top: 0 !important;
+	}
+}
+
+.new-league-customize-teams-wrapper {
+	border-right: 2px $black solid;
+}
+
+.align-middle-all td {
+	vertical-align: middle;
+}
+
+#confetti {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1050;
+}
+
+// https://blog.jim-nielsen.com/2019/generating-shades-of-color-using-css-variables/
+// Convert a hex value to comma-delimited rgb values
+// In: #000
+// Out: 0,0,0
+@function derive-rgb-values-from-hex($hex) {
+	@return red($hex), green($hex), blue($hex);
+}
+
+:root {
+	--gradient-base-danger: #{derive-rgb-values-from-hex(lighten($danger, 20%))};
+	--gradient-base-success: #{derive-rgb-values-from-hex(lighten($success, 20%))};
+}
+
+// Hacky fix for https://github.com/react-bootstrap/react-bootstrap/issues/5270
+.popover-margin-fix-1 {
+	&[data-popper-placement="top"] {
+		margin-bottom: 8px !important;
+	}
+	&[data-popper-placement="right"] {
+		margin-left: 8px !important;
+		margin-top: -4px !important;
+	}
+	&[data-popper-placement="bottom"] {
+		margin-top: 8px !important;
+	}
+	&[data-popper-placement="left"] {
+		margin-right: 8px !important;
+		margin-top: -4px !important;
+	}
+}
+
+@include media-breakpoint-up(sm) {
+	.play-through-injuries {
+		width: 200px;
+	}
 }
